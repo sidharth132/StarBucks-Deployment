@@ -59,19 +59,6 @@ npm run dev
 
 - **Engaging Product Slider**: A responsive cursor-driven slider enhances product browsing, offering an immersive and dynamic exploration experience.
 
-
-## Acknowledgements
-
-**Development Team**:
-
-- Thank you to our dedicated team of developers for their hard work and commitment to excellence throughout the project.
-  - [Aayush Singh (Captain)](https://github.com/aayushsingh7)
-  - [Srinivash R.T](https://github.com/CByadd)
-
-**Sheryians from Reimagine Hackathon:**
-
-- A special thank you to the `Sheryians team` for organizing the `ReImagine` Hackathon, which provided the platform for us to collaborate and create this project.
-
 <br>
 
 ## Thank You😁💖
