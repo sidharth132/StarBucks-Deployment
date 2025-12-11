@@ -34,11 +34,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      # # Az Login
-      # - name: Azure Login
-      #   uses: azure/login@v2
-      #   with:
-      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+      # Az Login
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # # Setup Node.js
       # - name: Set up Node.js
