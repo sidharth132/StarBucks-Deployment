@@ -34,53 +34,53 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      # Az Login
-      - name: Azure Login
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      # # Az Login
+      # - name: Azure Login
+      #   uses: azure/login@v2
+      #   with:
+      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Setup Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
+      # # Setup Node.js
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '18'
 
-      # Install dependencies
-      - name: Install dependencies
-        run: npm install
+      # # Install dependencies
+      # - name: Install dependencies
+      #   run: npm install
 
-      # SonarQube scan
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v4
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        with:
-          args: >
-            -Dsonar.projectKey=starbucks
-            -Dsonar.projectName=starbucks
+      # # SonarQube scan
+      # - name: SonarQube Scan
+      #   uses: SonarSource/sonarqube-scan-action@v4
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      #   with:
+      #     args: >
+      #       -Dsonar.projectKey=starbucks
+      #       -Dsonar.projectName=starbucks
 
-      # Wait for SonarQube Quality Gate
-      - name: Wait for SonarQube Quality Gate
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        with:
-          pollingTimeoutSec: 600
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      # # Wait for SonarQube Quality Gate
+      # - name: Wait for SonarQube Quality Gate
+      #   uses: sonarsource/sonarqube-quality-gate-action@master
+      #   with:
+      #     pollingTimeoutSec: 600
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
-      #  Install Trivy   
-      - name: Aqua Security Trivy
-        uses: aquasecurity/trivy-action@0.33.1
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          # ignore-unfixed: 'false'
-          vuln-type: 'os,library'
-          severity: 'HIGH,CRITICAL'
-          format: 'table'
-          output: 'trivyfs.txt'
+      # #  Install Trivy   
+      # - name: Aqua Security Trivy
+      #   uses: aquasecurity/trivy-action@0.33.1
+      #   with:
+      #     scan-type: 'fs'
+      #     scan-ref: '.'
+      #     # ignore-unfixed: 'false'
+      #     vuln-type: 'os,library'
+      #     severity: 'HIGH,CRITICAL'
+      #     format: 'table'
+      #     output: 'trivyfs.txt'
 
       # Login to ACR
       - name: Azure ACR Login
@@ -98,17 +98,17 @@ jobs:
           push: true
           tags: ${{ env.ACR_LOGIN_SERVER }}/starbucks:latest
 
-      # Trivy Image Scan
-      - name: Trivy Image Scan
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ env.ACR_LOGIN_SERVER }}/starbucks:latest
-          format: "table"
-          severity: "CRITICAL,HIGH"
-          exit-code: 0               
-          ignore-unfixed: true
-          vuln-type: "os,library"
-          output: 'trivyimage.txt'
+      # # Trivy Image Scan
+      # - name: Trivy Image Scan
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: ${{ env.ACR_LOGIN_SERVER }}/starbucks:latest
+      #     format: "table"
+      #     severity: "CRITICAL,HIGH"
+      #     exit-code: 0               
+      #     ignore-unfixed: true
+      #     vuln-type: "os,library"
+      #     output: 'trivyimage.txt'
 
 
 # --------------------- DEPLOY TO AKS & EMAIL NOTIFICATION ---------------------
@@ -144,20 +144,20 @@ jobs:
           kubectl get pods -n starbucks-ns
           kubectl get ingress -n starbucks-ns -owide
 
-      #  Email Notification
-      - name: Send Email Notification
-        if: always()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.EMAIL_USER }}
-          password: ${{ secrets.EMAIL_PASS }}
-          subject: "GitHub Actions Build ${{ job.status }}: Amazon CI/CD #${{ github.run_number }}"
-          html_body: |
-            <p>Build: ${{ job.status }}</p>
-            <p>Repository: ${{ github.repository }}</p>
-            <p>Branch: ${{ github.ref_name }}</p>
-            <p>Build URL: <a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">View Workflow</a></p>
-          to: ${{ secrets.EMAIL_USER }}
-          from: ${{ secrets.EMAIL_USER }}
+      # #  Email Notification
+      # - name: Send Email Notification
+      #   if: always()
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: smtp.gmail.com
+      #     server_port: 465
+      #     username: ${{ secrets.EMAIL_USER }}
+      #     password: ${{ secrets.EMAIL_PASS }}
+      #     subject: "GitHub Actions Build ${{ job.status }}: Amazon CI/CD #${{ github.run_number }}"
+      #     html_body: |
+      #       <p>Build: ${{ job.status }}</p>
+      #       <p>Repository: ${{ github.repository }}</p>
+      #       <p>Branch: ${{ github.ref_name }}</p>
+      #       <p>Build URL: <a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">View Workflow</a></p>
+      #     to: ${{ secrets.EMAIL_USER }}
+      #     from: ${{ secrets.EMAIL_USER }}
