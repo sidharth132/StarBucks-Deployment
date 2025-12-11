@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: starbucks-app
-          image: gunjankaacr.azurecr.io/starbucks:latest
+          image: prodaksclusterregistry.azurecr.io/starbucks:latest
           ports:
             - containerPort: 80
           resources:
